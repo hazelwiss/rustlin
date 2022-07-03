@@ -1,16 +1,6 @@
-[package]
-name = "rustlin"
-version = "0.1.0"
-edition = "2021"
-
 [workspace]
 members = [
-    "os",
-    "os/bootloader",
-    "os/kernel",
-    "cargo",
+    "os/*",
+    "build_system",
 ]
 
-[dependencies]
-os = {path = "os"}
-anyhow = "1.0.13"

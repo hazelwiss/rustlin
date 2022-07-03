@@ -1,9 +1,13 @@
+pub mod imager;
+pub mod os_builder;
+pub mod qemu;
+
 use std::{path::PathBuf, str::FromStr};
 
 fn main() {
-    let os_builder = os::OSBuilder {
-        target: os::Target::amd64 {
-            kind: os::amd64::TargetType::BIOS,
+    let os_builder = os_builder::OSBuilder {
+        target: os_builder::Target::amd64 {
+            kind: os_builder::amd64::TargetType::BIOS,
         },
     };
     let mut bootloader = os_builder.build_bootloader();
@@ -20,6 +24,6 @@ fn main() {
         .expect("Invalid bootloader path");
     let image_path = PathBuf::from_str("target/rustlin_image")
         .expect("Unalble to make a path to the image path.");
-    rustlin::imager::create_image(&image_path, &bootloader_path);
-    rustlin::qemu::qemu_run(&image_path).expect("QEMU failed on exit.");
+    imager::create_image(&image_path, &bootloader_path);
+    qemu::qemu_run(&image_path).expect("QEMU failed on exit.");
 }
