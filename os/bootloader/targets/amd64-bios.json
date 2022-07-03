@@ -11,7 +11,7 @@
     "linker": "rust-lld",
     "pre-link-args": {
         "ld.lld": [
-            "-Tos/bootloader/lscripts/amd64.lds",
+            "-Tos/bootloader/lscripts/amd64-bios.lds",
             "--gc-sections"
         ]
     },

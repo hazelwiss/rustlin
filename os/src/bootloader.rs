@@ -8,7 +8,7 @@ pub struct BootloaderBuild {
 impl OSBuilder {
     pub fn build_bootloader(&self) -> BootloaderBuild {
         let path = &Path::new("os/bootloader").canonicalize().unwrap();
-        let target = PathBuf::from("./os/bootloader/targets/amd64-bios.json")
+        let target = PathBuf::from("os/bootloader/targets/amd64-bios.json")
             .canonicalize()
             .unwrap();
         let metadata = cargo::build(
@@ -19,6 +19,7 @@ impl OSBuilder {
                 target: Some(cargo::targets::Targets::Custom(
                     target.to_str().unwrap().to_string(),
                 )),
+                bin: Some("amd64-bios".to_string()),
             },
         )
         .expect("Failed to run cargo build when building bootloader");

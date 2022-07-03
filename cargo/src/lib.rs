@@ -13,6 +13,7 @@ pub struct LinkFlags {}
 pub struct CompileFlags {
     pub release: bool,
     pub target: Option<targets::Targets>,
+    pub bin: Option<String>,
 }
 
 pub struct Metadata {
@@ -32,6 +33,9 @@ pub fn build(
     }
     if let Some(target) = compile_flags.target {
         cargo.arg("--target").arg(target.to_string());
+    }
+    if let Some(bin) = compile_flags.bin {
+        cargo.arg("--bin").arg(bin);
     }
     let output = cargo
         .output()

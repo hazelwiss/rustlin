@@ -1,6 +1,3 @@
-mod imager;
-mod qemu;
-
 use std::{path::PathBuf, str::FromStr};
 
 fn main() {
@@ -23,6 +20,6 @@ fn main() {
         .expect("Invalid bootloader path");
     let image_path = PathBuf::from_str("target/rustlin_image")
         .expect("Unalble to make a path to the image path.");
-    imager::create_image(&image_path, &bootloader_path);
-    qemu::qemu_run(&image_path).expect("QEMU failed on exit.");
+    rustlin::imager::create_image(&image_path, &bootloader_path);
+    rustlin::qemu::qemu_run(&image_path).expect("QEMU failed on exit.");
 }
