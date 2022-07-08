@@ -1,6 +1,6 @@
 [workspace]
 members = [
     "os/*",
-    "build_system",
+    "build-system",
 ]
 

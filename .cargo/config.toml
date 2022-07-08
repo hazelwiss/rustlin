@@ -1,2 +1,2 @@
 [alias]
-krun = "run --bin build_system"
+krun = "run --bin build-system"
