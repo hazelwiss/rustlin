@@ -14,3 +14,4 @@ name = "amd64-uefi"
 test = false
 
 [dependencies]
+hw = {path = "../hw"}

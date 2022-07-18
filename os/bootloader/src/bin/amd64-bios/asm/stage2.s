@@ -1,19 +1,24 @@
-.section .boot.stage2, "awx"
+.section .boot, "awx"
 .code16
 
 .global stage2
 stage2:
+    # Load memory map into buffer.
+    # TODO!
+
     # Load rest of the bootloader into memory. Disk is divided into 512 byte blocks.
     mov cx, 1 
     mov lba_packet_size, cx 
     mov esi, offset __disk_load_buffer
     mov lba_load_buffer, esi
-    mov ecx, offset __bootloader_load_size
-    shr ecx, 9 # Get the amount of blocks to load from disk by dividing byte size by 512. (assuming alignment).
     mov si, offset msg_bl_zs
     jz error
     mov edi, offset __bootloader_load_adr
-    mov bx, 1  # Get LBA starting index for bootloader. 
+    mov bx, lba_starting_lba
+    add bx, lba_packet_size
+    inc bx
+    mov ecx, offset __bootloader_load_size
+    shr ecx, 9 # Get the amount of blocks to load from disk by dividing byte size by 512. (assuming alignment).
 .Lload_from_disk:
     push ecx
     push edi
@@ -33,7 +38,6 @@ stage2:
     rep movsb [edi], [esi]
     pop ecx
     loop .Lload_from_disk
-
     # Enter protected mode for real this time and enter stage 3!
     lgdt[gdt32_ptr] 
     mov eax, cr0

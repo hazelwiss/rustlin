@@ -21,6 +21,7 @@ impl OSBuilder {
                 )),
                 bin: Some("amd64-bios".to_string()),
             },
+            false,
         )
         .expect("Failed to run cargo build when building bootloader");
         BootloaderBuild { metadata }

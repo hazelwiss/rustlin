@@ -1,2 +1,3 @@
 [alias]
-krun = "run --bin build-system"
+rustlin = "run --bin build-system -q --"
+rustlin-run = "rustlin --qemu"

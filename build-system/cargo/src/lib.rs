@@ -3,7 +3,7 @@ pub mod targets;
 use anyhow::{anyhow, Result};
 use std::{
     path::{Path, PathBuf},
-    process::Command,
+    process::{Command, Stdio},
 };
 
 #[derive(Default)]
@@ -24,6 +24,7 @@ pub fn build(
     crate_path: &Path,
     link_flags: LinkFlags,
     compile_flags: CompileFlags,
+    quiet: bool,
 ) -> Result<Metadata> {
     let mut cargo = Command::new("cargo");
     cargo.arg("build");
@@ -37,7 +38,14 @@ pub fn build(
     if let Some(bin) = compile_flags.bin {
         cargo.arg("--bin").arg(bin);
     }
+    let (stderr, stdout) = if quiet {
+        (Stdio::piped(), Stdio::piped())
+    } else {
+        (Stdio::inherit(), Stdio::inherit())
+    };
     let output = cargo
+        .stderr(stderr)
+        .stdout(stdout)
         .output()
         .expect(&format!("Unable to execute cargo build command {cargo:?}"));
     if !output.status.success() {
@@ -48,6 +56,8 @@ pub fn build(
         ));
     }
     cargo.arg("--message-format").arg("json");
+    cargo.stdout(Stdio::piped());
+    cargo.stderr(Stdio::piped());
     let output = cargo.output().expect(&format!(
         "Unable to execute cargo build command for json output {cargo:?}"
     ));
